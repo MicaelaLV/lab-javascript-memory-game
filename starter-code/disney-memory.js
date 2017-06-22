@@ -1,10 +1,11 @@
 console.log("Javascript is ready to go!");
 
 
+
 // //******************************************************************
 // // Game Logic
 // //******************************************************************
-var MemoryGame = function() {
+function Game() {
   this.cards = [
   		{ name: "anna",            img: "anna.jpg" },
   		{ name: "aurora",          img: "aurora.jpg" },
@@ -31,28 +32,41 @@ var MemoryGame = function() {
   		{ name: "snowhite",        img: "snowhite.jpg" },
   		{ name: "wonderwoman",     img: "wonderwoman.jpg" },
   	];
+
     this.selectedCards = [];
     this.pairsClicked = 0;
     this.correctPairs = 0;
-};
+    this._shuffleCards();
 
-// Shuffle cards method
-MemoryGame.prototype._shuffleCards = function(array, random) {
-     var i = array.length, j, swap;
-      random = random || Math.random;
-        while (--i) {
-          j = random() * (i + 1) | 0;
-            swap = array[i];
-              array[i] = array[j];
-                array[j] = swap;
-         }
-    return array;
-};
+    //shuffling cards with Lodash
 
-// Select a card
-MemoryGame.prototype.selectCard = function(card) {
+}
 
-};
+Game.prototype._shuffleCards = function () {
+  this.cards = _.shuffle(this.cards);
+ };
+
+ Game.prototype._selectCard = function() {
+   if (this.selectedCards.length === 0) {
+     $(card).addClass('.blocked');
+     this.selectedCards.push(card);
+     console.log(this.selectedCards[0].id, this.selectedCards[1].id);
+   } else if (this.selectedCards.length === 1) {
+     this.pairsClicked++;
+     $(card).addClass('.blocked');
+     this.selectedCards.push(card);
+   }
+
+    if (this.selectedCards[0].id === this.selectedCards[1].id) {
+      this.correctPairs++;
+    } else {
+      $(this.selectedCards[0]).css('background-color', '#D6B3F6');
+      $(this.selectedCards[0]).css('background-color', '#D6B3F6');
+    }    this.selectedCards = [];
+
+
+ };
+
 
 
 
@@ -60,27 +74,25 @@ MemoryGame.prototype.selectCard = function(card) {
 // // HTML/CSS Interactions
 // //******************************************************************
 
-var memoryGame;
+var Game;
 
 $(document).ready(function(){
-  memoryGame = new MemoryGame();
+  game = new Game();
   var html = '';
 
-  memoryGame.cards.forEach(function(pic, index) {
-    var sanitizedName = pic.name.split(' ').join('_');
-
-    html += '<div class= "card" id="card_' + sanitizedName + '">';
-    html += '<div class="back"';
-    html += '    name="img/' + pic.name + '"';
-    html += '    id="'       + pic.img +  '">';
-    html += '</div>';
-    html += '<div class="front" ';
-    html += 'style="background: url(\'img/' + pic.img + '\') no-repeat"';
-    html += '    id="'       + pic.img +  '">';
-    html += '</div>';
+  game.cards.forEach(function(picture, index) {
+    html += '<div class= "card"';
+    html += 'name ="img"/' + picture.name + ' id= '+ picture.img +'>';
     html += '</div>';
   });
 
-  // Add all the divs to the HTML
-  document.getElementById('memory_board').innerHTML = html;
+$('#memory_board').append(html);
+
+    $('.card').on("click", function(){
+      game.selectedCards(this);
+      var imgId = $(this).attr('id');
+      $(this).css('background-image', 'url(img/' + imgId + ')');
+    });
+
+
 });

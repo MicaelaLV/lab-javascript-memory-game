@@ -63,7 +63,7 @@ p {
   box-shadow: inset 0px 0px 20px -6px rgba(97,89,97,1);
 }
 
-.card .back {
+.card {
   background-color: #D6B3F6;
 	width:71px;
 	height:71px;
@@ -73,7 +73,15 @@ p {
 	font-size:64px;
 }
 
-.card .front.blocked,
-.card .back.blocked {
+.front-face {
+  width:71px;
+	height:71px;
+	float:left;
+	margin:10px;
+	padding:20px;
+	font-size:64px;
+}
+
+.blocked {
   pointer-events: none;
 }
